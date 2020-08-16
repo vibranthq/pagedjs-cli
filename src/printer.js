@@ -19,17 +19,17 @@ class Printer extends EventEmitter {
     this.headless = options.headless !== false;
     this.allowLocal = options.allowLocal;
     this.allowRemote = options.allowRemote;
-    this.additionalScripts = options.additionalScripts;
+    this.additionalScripts = options.additionalScripts || [];
     this.allowedPaths = options.allowedPaths || [];
     this.allowedDomains = options.allowedDomains || [];
-    this.ignoreHTTPSErrors = options.ignoreHTTPSErrors;
+    this.ignoreHTTPSErrors = options.ignoreHTTPSErrors || true;
     this.browserWSEndpoint = options.browserEndpoint;
 
     this.pages = [];
   }
 
   async setup() {
-    let puppeteerOptions = {
+    const puppeteerOptions = {
       headless: this.headless,
       args: ["--disable-dev-shm-usage"],
       ignoreHTTPSErrors: this.ignoreHTTPSErrors,
@@ -43,11 +43,7 @@ class Printer extends EventEmitter {
       puppeteerOptions.browserWSEndpoint = this.browserWSEndpoint;
     }
 
-    const browser = await puppeteer.launch(puppeteerOptions);
-
-    this.browser = browser;
-
-    return browser;
+    return (this.browser = await puppeteer.launch(puppeteerOptions));
   }
 
   async render(input) {
@@ -83,7 +79,7 @@ class Printer extends EventEmitter {
       const { host, protocol, pathname } = uri;
       const local = protocol === "file:";
 
-      if (local && this.withinAllowedPath(pathname) === false) {
+      if (local && !this.withinAllowedPath(pathname)) {
         request.abort();
         return;
       }
@@ -93,7 +89,7 @@ class Printer extends EventEmitter {
         return;
       }
 
-      if (host && this.isAllowedDomain(host) === false) {
+      if (host && !this.isAllowedDomain(host)) {
         request.abort();
         return;
       }
@@ -142,17 +138,11 @@ class Printer extends EventEmitter {
       });
     }
 
-    // await page.exposeFunction("PuppeteerLogger", (msg) => {
-    //   console.log(msg);
-    // });
-
     await page.exposeFunction("onSize", (size) => {
       this.emit("size", size);
     });
 
     await page.exposeFunction("onPage", (page) => {
-      // console.log("page", page.position + 1);
-
       this.pages.push(page);
 
       this.emit("page", page);
@@ -306,7 +296,7 @@ class Printer extends EventEmitter {
     });
 
     const outline =
-      options.outlineTags.length > 0
+      options.outlineTags && options.outlineTags.length > 0
         ? await this._parseOutline(page, options.outlineTags)
         : null;
 
