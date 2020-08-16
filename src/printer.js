@@ -3,12 +3,12 @@ const puppeteer = require("puppeteer");
 
 const path = require("path");
 
-let dir = process.cwd();
+const dir = process.cwd();
 
 // Find top most pagedjs
-let pagedjsLocation = require.resolve("pagedjs/dist/paged.polyfill.js");
-let paths = pagedjsLocation.split("node_modules");
-let scriptPath = paths[0] + "node_modules" + paths[paths.length - 1];
+const pagedjsLocation = require.resolve("pagedjs/dist/paged.polyfill.js");
+const paths = pagedjsLocation.split("node_modules");
+const scriptPath = paths[0] + "node_modules" + paths[paths.length - 1];
 
 const PostProcessor = require("./postprocessor");
 
@@ -52,7 +52,7 @@ class Printer extends EventEmitter {
 
   async render(input) {
     let resolver;
-    let rendered = new Promise(function (resolve, reject) {
+    const rendered = new Promise(function (resolve) {
       resolver = resolve;
     });
 
@@ -62,10 +62,10 @@ class Printer extends EventEmitter {
 
     const page = await this.browser.newPage();
 
-    let uri, url, relativePath, html;
+    let url, relativePath, html;
     if (typeof input === "string") {
       try {
-        uri = new URL(input);
+        new URL(input); // validate URL
         url = input;
       } catch (error) {
         relativePath = path.resolve(dir, input);
@@ -79,9 +79,9 @@ class Printer extends EventEmitter {
     await page.setRequestInterception(true);
 
     page.on("request", (request) => {
-      let uri = new URL(request.url());
-      let { host, protocol, pathname } = uri;
-      let local = protocol === "file:";
+      const uri = new URL(request.url());
+      const { host, protocol, pathname } = uri;
+      const local = protocol === "file:";
 
       if (local && this.withinAllowedPath(pathname) === false) {
         request.abort();
@@ -186,7 +186,7 @@ class Printer extends EventEmitter {
           return Math.round(CSS.px(value).to("pt").value * 100) / 100;
         }
 
-        let boxes = {
+        const boxes = {
           media: {
             width: getPointsValue(mediaBox.width),
             height: getPointsValue(mediaBox.height),
@@ -219,7 +219,7 @@ class Printer extends EventEmitter {
       });
 
       window.PagedPolyfill.on("rendered", (flow) => {
-        let msg =
+        const msg =
           "Rendering " +
           flow.total +
           " pages took " +
@@ -287,16 +287,16 @@ class Printer extends EventEmitter {
   }
 
   async pdf(input, options = {}) {
-    let page = await this.render(input);
+    const page = await this.render(input);
 
     // Get meta tags
     const meta = await page.evaluate(() => {
-      let meta = {};
-      let title = document.querySelector("title");
+      const meta = {};
+      const title = document.querySelector("title");
       if (title) {
         meta.title = title.textContent.trim();
       }
-      let metaTags = document.querySelectorAll("meta");
+      const metaTags = document.querySelectorAll("meta");
       [...metaTags].forEach((tag) => {
         if (tag.name) {
           meta[tag.name] = tag.content;
@@ -310,7 +310,7 @@ class Printer extends EventEmitter {
         ? await this._parseOutline(page, options.outlineTags)
         : null;
 
-    let settings = {
+    const settings = {
       printBackground: true,
       displayHeaderFooter: false,
       preferCSSPageSize: options.width ? false : true,
@@ -325,7 +325,7 @@ class Printer extends EventEmitter {
       },
     };
 
-    let pdf = await page.pdf(settings).catch((e) => {
+    const pdf = await page.pdf(settings).catch((e) => {
       console.error(e);
     });
 
@@ -333,21 +333,20 @@ class Printer extends EventEmitter {
 
     this.emit("postprocessing");
 
-    let post = new PostProcessor(pdf);
+    const post = new PostProcessor(pdf);
     post.metadata(meta);
     post.boxes(this.pages);
     if (outline) {
       post.addOutline(outline);
     }
-    pdf = post.save();
 
-    return pdf;
+    return post.save();
   }
 
   async html(input, stayOpen) {
-    let page = await this.render(input);
+    const page = await this.render(input);
 
-    let content = await page.content().catch((e) => {
+    const content = await page.content().catch((e) => {
       console.error(e);
     });
 
@@ -356,7 +355,7 @@ class Printer extends EventEmitter {
   }
 
   async preview(input) {
-    let page = await this.render(input);
+    const page = await this.render(input);
     return page;
   }
 

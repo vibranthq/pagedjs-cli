@@ -1,6 +1,8 @@
 # PagedJS PDF Renderer
 
-Render Html to PDFs using [Pagedjs](https://gitlab.pagedmedia.org/polyfills/pagedjs) and [Puppeteer](https://github.com/GoogleChrome/puppeteer).
+> Fork of [pagedjs-cli](https://gitlab.pagedmedia.org/tools/pagedjs-cli).
+
+Render HTML into PDF using [Pagedjs](https://gitlab.pagedmedia.org/polyfills/pagedjs) and [Puppeteer](https://github.com/GoogleChrome/puppeteer).
 
 ## Installation
 
@@ -34,7 +36,7 @@ pagedjs-cli ./path/to/index.html -o result.pdf
 --outline-tags [tags]             Specifies that an outline should be generated for the resulting PDF
                                   document. [tags] specifies which HTML tags should be considered for that
                                   outline. "h1,h2" will trigger an outline with "h1" tags as root elements
-                                  and "h2" elements as their childs.
+                                  and "h2" elements as their children.
 --additional-script <script>      Additional script tags which are added to the HTML document before
                                   rendering. This is useful for adding custom pagedjs handlers. The option
                                   can be repeated. (default: [])
@@ -58,9 +60,6 @@ Link and build the JS
 ```
 npm install
 npm link
-npm install -g gulp
-
-gulp watch
 ```
 
 To display the output in the browser window before printing,

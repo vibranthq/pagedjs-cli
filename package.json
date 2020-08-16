@@ -1,35 +1,46 @@
 {
   "name": "pagedjs-cli",
   "version": "0.1.0",
-  "author": "Fred Chasen",
+  "author": "Yasuaki Uechi",
   "scripts": {
-    "build": "pkg .",
-    "lint": "./node_modules/.bin/eslint src bin/paged",
-    "start": "./bin/paged"
+    "package": "pkg .",
+    "lint": "eslint src bin/paged",
+    "start": "paged",
+    "test": "mocha"
   },
   "main": "index.js",
-  "bin": "./bin/paged",
+  "bin": "bin/paged",
   "dependencies": {
-    "commander": "^5.0.0",
+    "commander": "^6.0.0",
     "express": "^4.17.1",
-    "hyphenopoly": "^4.2.1",
-    "katex": "^0.11.1",
-    "lodash": "^4.17.15",
+    "hyphenopoly": "^4.7.0",
+    "katex": "^0.12.0",
+    "lodash": "^4.17.20",
     "mathjax": "^3.0.1",
     "node-fetch": "^2.6.0",
-    "ora": "^4.0.3",
-    "pagedjs": "0.1.40",
+    "ora": "^5.0.0",
+    "pagedjs": "0.1.42",
     "pdf-lib": "0.6.4",
-    "puppeteer": "^2.1.1",
-    "replace-ext": "^1.0.0"
+    "puppeteer": "^5.2.1",
+    "replace-ext": "^2.0.0"
   },
   "devDependencies": {
-    "eslint": "^6.8.0"
+    "eslint": "^7.7.0",
+    "husky": "^4.2.5",
+    "mocha": "^8.1.1",
+    "pkg": "^4.4.9",
+    "prettier": "^2.0.5",
+    "pretty-quick": "^2.0.1"
   },
-  "homepage": "https://pagedmedia.org",
+  "husky": {
+    "hooks": {
+      "pre-commit": "pretty-quick --staged"
+    }
+  },
+  "homepage": "https://github.com/vibranthq/vibrant-cli",
   "repository": {
     "type": "git",
-    "url": "https://gitlab.pagedmedia.org/polyfills/pagedjs-cli.git"
+    "url": "https://github.com/vibranthq/vibrant-cli.git"
   },
   "license": "MIT"
 }

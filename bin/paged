@@ -1,11 +1,10 @@
 #!/usr/bin/env node
+
 const program = require("commander");
 const ora = require("ora");
 const Printer = require("../");
 const path = require("path");
 const fs = require("fs");
-// const { promisify } = require("util");
-// const writeFileAsync = promisify(fs.writeFile);
 const replaceExt = require("replace-ext");
 
 program
@@ -45,7 +44,7 @@ program
       "generated for the resulting PDF document. [tags] specifies which " +
       "HTML tags should be considered for that outline. " +
       '"h1,h2" will trigger an outline with "h1" tags as root elements ' +
-      'and "h2" elements as their childs.'
+      'and "h2" elements as their children.'
   )
   .option(
     "--additional-script <script>",
@@ -65,14 +64,14 @@ function collect(value, previous) {
   return previous.concat(value);
 }
 
-let input = program.inputs || program.args[0];
+const input = program.inputs || program.args[0];
 
-let dir = process.cwd();
+const dir = process.cwd();
 
 let relativePath;
 let allowLocal;
 try {
-  let uri = new URL(input);
+  new URL(input);
   allowLocal = false;
 } catch (error) {
   relativePath = path.resolve(dir, input);
@@ -81,10 +80,7 @@ try {
 
 let output;
 
-let headless = typeof program.debug === "undefined";
-
-// var hyphenator;
-// var hyphenateOptions;
+const headless = typeof program.debug === "undefined";
 
 if (!input) {
   console.error("You must include an input path");
@@ -124,7 +120,7 @@ if (typeof input === "string") {
 }
 
 (async () => {
-  let printer = new Printer({
+  const printer = new Printer({
     headless: headless,
     allowLocal: allowLocal,
     allowRemote: !program.blockRemote,
@@ -155,7 +151,7 @@ if (typeof input === "string") {
 
   let file;
   if (headless) {
-    let options = {};
+    const options = {};
     if (program.html) {
       file = await printer.html(input, options);
       output = replaceExt(output, ".html");

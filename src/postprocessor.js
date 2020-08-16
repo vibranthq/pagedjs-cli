@@ -31,7 +31,7 @@ class PostProcessor extends EventEmitter {
     meta.metadataDate = new Date();
 
     // Get the existing Info
-    let info = this.getInfoDict();
+    const info = this.getInfoDict();
     if (!meta.creator) {
       meta.creator = info.creator + " + Paged.js";
     }
@@ -47,8 +47,8 @@ class PostProcessor extends EventEmitter {
 
   getInfoDict() {
     // Info Reference in Skia PDF is always 1st
-    let ref = PDFLib.PDFIndirectReference.forNumbers(1, 0);
-    let info = this.pdfDoc.index.lookup(ref);
+    const ref = PDFLib.PDFIndirectReference.forNumbers(1, 0);
+    const info = this.pdfDoc.index.lookup(ref);
     return {
       title: info.getMaybe("Title") && info.getMaybe("Title").string,
       subject: info.getMaybe("Subject") && info.getMaybe("Subject").string,
@@ -64,8 +64,8 @@ class PostProcessor extends EventEmitter {
 
   updateInfoDict(meta) {
     // Info Reference in Skia pdf is always 1st
-    let ref = PDFLib.PDFIndirectReference.forNumbers(1, 0);
-    let info = this.pdfDoc.index.lookup(ref);
+    const ref = PDFLib.PDFIndirectReference.forNumbers(1, 0);
+    const info = this.pdfDoc.index.lookup(ref);
 
     if (meta.title) {
       info.set("Title", PDFLib.PDFString.fromString(meta.title));
@@ -188,7 +188,7 @@ class PostProcessor extends EventEmitter {
         return; // page was not rendered
       }
 
-      let { boxes } = page;
+      const { boxes } = page;
 
       if (Object.is(boxes.media, boxes.crop)) {
         return; // No bleed set
@@ -309,7 +309,7 @@ class PostProcessor extends EventEmitter {
   }
 
   save() {
-    let writer = new PDFDocumentWriter();
+    const writer = new PDFDocumentWriter();
     const pdfBytes = writer.saveToBytesWithXRefTable(this.pdfDoc);
     this.pdf = pdfBytes;
     return this.pdf;
