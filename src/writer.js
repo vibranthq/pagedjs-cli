@@ -1,9 +1,10 @@
 const PDFLib = require("pdf-lib");
 
-const isFunction = require( "lodash/isFunction" );
-const last = require( "lodash/last" );
-const sortBy = require( "lodash/sortBy" );
-const PDFXRefTableFactory  = require( "pdf-lib/lib/core/pdf-structures/factories/PDFXRefTableFactory" ).default;
+const isFunction = require("lodash/isFunction");
+const last = require("lodash/last");
+const sortBy = require("lodash/sortBy");
+const PDFXRefTableFactory = require("pdf-lib/lib/core/pdf-structures/factories/PDFXRefTableFactory")
+  .default;
 
 const createIndirectObjectsFromIndex = ({ index }) => {
   let catalogRef;
@@ -21,17 +22,13 @@ const createIndirectObjectsFromIndex = ({ index }) => {
   return { catalogRef, streamObjects, nonStreamObjects };
 };
 
-const computeOffsets = (
-  startingOffset,
-  indirectObjects,
-) =>
+const computeOffsets = (startingOffset, indirectObjects) =>
   indirectObjects.map((object) => ({
     objectNumber: object.reference.objectNumber,
     generationNumber: object.reference.generationNumber,
     startOffset: startingOffset,
-    endOffset: startingOffset += object.bytesSize(),
+    endOffset: (startingOffset += object.bytesSize()),
   }));
-
 
 class PDFDocumentWriter extends PDFLib.PDFDocumentWriter {
   constructor() {
@@ -62,12 +59,14 @@ class PDFDocumentWriter extends PDFLib.PDFDocumentWriter {
       tableOffset,
       PDFLib.PDFDictionary.from(
         {
-          Size: PDFLib.PDFNumber.fromNumber(last(sortedOffsets).objectNumber + 1),
+          Size: PDFLib.PDFNumber.fromNumber(
+            last(sortedOffsets).objectNumber + 1
+          ),
           Root: catalogRef,
           Info: PDFLib.PDFIndirectReference.forNumbers(1, 0), // TODO: this is specific to Skia
         },
-        pdfDoc.index,
-      ),
+        pdfDoc.index
+      )
     );
 
     /* ===== (3) Create buffer and copy objects into it ===== */
@@ -79,7 +78,7 @@ class PDFDocumentWriter extends PDFLib.PDFDocumentWriter {
     let remaining = pdfDoc.header.copyBytesInto(buffer);
     remaining = merged.reduce(
       (remBytes, indirectObj) => indirectObj.copyBytesInto(remBytes),
-      remaining,
+      remaining
     );
     remaining = table.copyBytesInto(remaining);
     remaining = trailer.copyBytesInto(remaining);

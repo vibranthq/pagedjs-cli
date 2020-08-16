@@ -47,14 +47,14 @@ HTML can be pre-processed with soft hyphens by the [Hypher](https://github.com/b
 
 Pass the abbreviation a language code (such as `en-us` or `de`) when calling the renderer. You can install languages beyond those included the package.json using npm.
 
-
 ```
 pagedjs-cli ./path/to/index.html --hyphenate en-us --output
 ```
 
-
 ## Development
+
 Link and build the JS
+
 ```
 npm install
 npm link
@@ -75,6 +75,7 @@ pagedjs-cli ./path/to/index.html --debug
 Install Mocha with `npm install -g mocha`
 
 Run the tests from the library root with the `mocha` command
+
 ```
 mocha
 ```

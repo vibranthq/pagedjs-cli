@@ -1,10 +1,10 @@
-html{
-  --serif: 'spectral', serif;
-  --sans-serif: 'hk-grotesk', sans-serif;
+html {
+  --serif: "spectral", serif;
+  --sans-serif: "hk-grotesk", sans-serif;
   --font-size: 13px;
   --font-size-notes: 9px;
   --line-height: 15px;
-  --line-height-notes: calc(15px*2/3);
+  --line-height-notes: calc(15px * 2 / 3);
   --indent: 6mm;
   --baseline: 15px;
 }
@@ -13,7 +13,6 @@ html{
   size: A5;
 }
 
-
 @page cover {
   margin: 0;
   background: url("images/cover.jpg");
@@ -21,38 +20,78 @@ html{
   background-size: 104%;
   background-repeat: no-repeat;
 
-  @top-left{ content: none; }
-  @top-center{ content: none; }
-  @top-right{ content: none; }
-  @bottom-left{ content: none; }
+  @top-left {
+    content: none;
+  }
+  @top-center {
+    content: none;
+  }
+  @top-right {
+    content: none;
+  }
+  @bottom-left {
+    content: none;
+  }
 }
 
-@page:blank {
-  @top-left-corner{ content: none; }
-  @top-left{ content: none; }
-  @top-center{ content: none; }
-  @top-right{ content: none; }
-  @top-right-corner{ content: none; }
-  @right-top{ content: none; }
-  @right-middle{ content: none; }
-  @right-bottom{ content: none; }
-  @bottom-right-corner{ content: none; }
-  @bottom-right{ content: none; }
-  @bottom-center{ content: none; }
-  @bottom-left{ content: none; }
-  @bottom-left-corner{ content: none; }
-  @left-bottom{ content: none; }
-  @left-middle{ content: none; }
-  @left-top{ content: none; }
+@page: blank {
+  @top-left-corner {
+    content: none;
+  }
+  @top-left {
+    content: none;
+  }
+  @top-center {
+    content: none;
+  }
+  @top-right {
+    content: none;
+  }
+  @top-right-corner {
+    content: none;
+  }
+  @right-top {
+    content: none;
+  }
+  @right-middle {
+    content: none;
+  }
+  @right-bottom {
+    content: none;
+  }
+  @bottom-right-corner {
+    content: none;
+  }
+  @bottom-right {
+    content: none;
+  }
+  @bottom-center {
+    content: none;
+  }
+  @bottom-left {
+    content: none;
+  }
+  @bottom-left-corner {
+    content: none;
+  }
+  @left-bottom {
+    content: none;
+  }
+  @left-middle {
+    content: none;
+  }
+  @left-top {
+    content: none;
+  }
 }
 
-@page:left {
-  margin-left:22mm;
-  margin-right:14mm;
+@page: left {
+  margin-left: 22mm;
+  margin-right: 14mm;
   margin-top: 73px;
   margin-bottom: 73px;
 
-  @top-left{
+  @top-left {
     content: counter(page);
     font-weight: 400;
     font-family: var(--serif);
@@ -64,7 +103,7 @@ html{
     font-variant-numeric: oldstyle-nums;
   }
 
-  @top-center{
+  @top-center {
     content: string(booktitle);
     font-weight: 400;
     font-family: var(--serif);
@@ -80,12 +119,12 @@ html{
   }
 }
 
-@page:right {
-  margin-left:14mm;
-  margin-right:22mm;
+@page: right {
+  margin-left: 14mm;
+  margin-right: 22mm;
   margin-top: 73px;
   margin-bottom: 73px;
-  @top-right{
+  @top-right {
     content: counter(page);
     font-weight: 400;
     font-family: var(--serif);
@@ -98,7 +137,7 @@ html{
     text-align: right;
   }
 
-  @top-center{
+  @top-center {
     content: element(shorter);
     vertical-align: bottom;
     text-align: right;
@@ -107,25 +146,29 @@ html{
   }
 }
 
-.sidenote, .footnote {
-    display:none!important;
+.sidenote,
+.footnote {
+  display: none !important;
 }
 
-.footnote::footnote-call, .footnote::footnote-marker{
-    display:none!important;
+.footnote::footnote-call,
+.footnote::footnote-marker {
+  display: none !important;
 }
 
-.part h2, #appendices h2,
+.part h2,
+#appendices h2,
 section[data-type="half-title"],
 section[data-type="titlepage"],
 section[data-type="copyright"],
 section[data-type="dedication"],
 section[data-type="epigraph"],
 #toc {
-  margin-left: 10mm /*center the page*/
+  margin-left: 10mm; /*center the page*/
 }
 
-.part h2, #appendices h2{
+.part h2,
+#appendices h2 {
   page: part;
 }
 
@@ -139,7 +182,7 @@ section[data-type="epigraph"],
   page: cover;
 }
 
-.shorter{
+.shorter {
   position: running(shorter);
   font-weight: 400;
   font-family: var(--serif);
@@ -151,7 +194,6 @@ section[data-type="epigraph"],
   font-variant-numeric: oldstyle-nums;
 }
 
-
 /* flexbox */
 section[data-type="copyright"] #flexbox {
   display: block;
@@ -162,16 +204,15 @@ section[data-type="copyright"] #flexbox {
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  left:0;
+  left: 0;
 }
 
 /* table of content */
-#toc{
+#toc {
   counter-reset: chaptoc apptoc;
 }
-.toc-part a[href]::before{
+.toc-part a[href]::before {
   content: target-text(attr(href), before);
-
 }
 
 .toc-part a[href]::after,
@@ -181,10 +222,10 @@ section[data-type="copyright"] #flexbox {
   content: target-text(attr(href url), content);
 }
 
-.toc-chap{
+.toc-chap {
   counter-increment: chaptoc;
 }
-.toc-chap::before{
+.toc-chap::before {
   content: "Chapter " counter(chaptoc);
 }
 
@@ -192,24 +233,23 @@ section[data-type="copyright"] #flexbox {
   counter-increment: apptoc;
 }
 
-.toc-app::before{
+.toc-app::before {
   content: "Appendix " counter(apptoc);
 }
-
 
 .toc-chap a[href]::after,
 .toc-app a[href]::after {
   content: leader(dotted) target-counter(attr(href), page);
-  float:right;
+  float: right;
 }
 
-.toc-subchap a[href]::before{
+.toc-subchap a[href]::before {
   content: target-text(attr(href)); /* pdfreactor */
 }
 
 .toc-subchap a[href]::after {
-    content: target-counter(attr(href), page);
-    float:right;
+  content: target-counter(attr(href), page);
+  float: right;
 }
 
 /* counters, page-breaks, figure */
@@ -232,14 +272,18 @@ body {
   */
 }
 
-p:not(.shorter), li, h4:not(.h4-appe), #appendix-e h5  {
-  font-family: 'spectral', serif;
+p:not(.shorter),
+li,
+h4:not(.h4-appe),
+#appendix-e h5 {
+  font-family: "spectral", serif;
   font-size: 13px;
   line-height: 15px;
-  font-weight: 400
+  font-weight: 400;
 }
 
-p:not(.shorter), li {
+p:not(.shorter),
+li {
   text-indent: 6mm;
   text-align: justify;
   margin: 0;
@@ -251,51 +295,51 @@ p:not(.shorter), li {
 }
 
 .greek {
-  font-size: 0.9em
+  font-size: 0.9em;
 }
 
-
-h1, h2, h3, .h4-appe {
-  font-family: 'daubenton';
+h1,
+h2,
+h3,
+.h4-appe {
+  font-family: "daubenton";
   font-weight: normal;
   margin-top: 0;
-  margin-bottom: 0
+  margin-bottom: 0;
 }
 
-
-
-
 #cover h1 {
-  color:transparent;
+  color: transparent;
 }
 
 .titlechapter + p,
 .shorter + p,
-h2+p,
-h3+p,
-h4+p,
-h5+p,
-h6+p,
-h3+div+p,
-h4+div+p,
-h2+span+p,
-h3+span+p,
-h4+span+p,
-h5+span+p,
-h6+span+p,
-table+p,
-.center+p,
-.note-titre+p,
+h2 + p,
+h3 + p,
+h4 + p,
+h5 + p,
+h6 + p,
+h3 + div + p,
+h4 + div + p,
+h2 + span + p,
+h3 + span + p,
+h4 + span + p,
+h5 + span + p,
+h6 + span + p,
+table + p,
+.center + p,
+.note-titre + p,
 .center,
 .separator + p {
-  text-indent: 0!important;
+  text-indent: 0 !important;
 }
 
-.center+p {
+.center + p {
   margin-top: 15px;
 }
 
-h3, h2 {
+h3,
+h2 {
   display: block;
   height: 47.7mm; /* 63.5mm - 15.8mm */
   padding-top: 15.8mm;
@@ -334,15 +378,16 @@ h3, h2 {
   content: "– Appendix " counter(numapp, upper-alpha) " –";
 }
 
-h3:before, h2:before {
+h3:before,
+h2:before {
   display: block;
   font-size: 13px;
   line-height: 15px;
   margin-bottom: 9px;
-
 }
 
-h4:not(.h4-appe), #appendix-e h5 {
+h4:not(.h4-appe),
+#appendix-e h5 {
   margin-top: 0;
   margin-bottom: 0;
   padding-top: 7px;
@@ -356,7 +401,7 @@ h4:not(.h4-appe) {
 }
 
 table caption {
-  font-family: 'spectral', serif;
+  font-family: "spectral", serif;
   font-size: 0.7em;
   line-height: 15px;
   font-weight: 400;
@@ -368,25 +413,24 @@ table caption {
 }
 
 .center {
-  text-align: center!important;
+  text-align: center !important;
 }
 
-.separator{
-  display:block;
+.separator {
+  display: block;
   height: 15px;
 }
-
 
 /* sidenote */
 
 .sidenote {
-  font-family: 'hk-grotesk', sans-serif;
+  font-family: "hk-grotesk", sans-serif;
   font-size: 9px;
   line-height: 10px;
-  font-weight: 600!important;
+  font-weight: 600 !important;
   margin-top: 3px;
   /* break-inside: avoid; */
-  hyphens: none!important;
+  hyphens: none !important;
 }
 
 /* Footnotes */
@@ -396,12 +440,13 @@ table caption {
   padding-left: 6mm;
   font-size: 9px;
   line-height: 10px;
-  text-indent: 0px!important
+  text-indent: 0px !important;
 }
 
-.footnote::footnote-call, .footnote::footnote-marker {
+.footnote::footnote-call,
+.footnote::footnote-marker {
   vertical-align: inherit;
-  font-family: 'hk-grotesk', sans-serif;
+  font-family: "hk-grotesk", sans-serif;
   font-weight: 600;
 }
 
@@ -424,11 +469,11 @@ table caption {
   position: absolute;
   bottom: 0;
   left: 0;
-  width: 80%
+  width: 80%;
 }
 
 #absolute-bottom p {
-  font-family: 'spectral', sans-serif;
+  font-family: "spectral", sans-serif;
   text-align: left;
   font-size: 9px;
   text-indent: 0;
@@ -441,7 +486,7 @@ section[data-type="half-title"] h1 {
 }
 
 section[data-type="half-title"] h1 .smaller {
-  font-size: 0.8em!important;
+  font-size: 0.8em !important;
   display: block;
   margin-top: 5px;
 }
@@ -455,8 +500,8 @@ section[data-type="titlepage"] h1 {
 
 section[data-type="titlepage"] h1 .smaller {
   display: block;
-  font-size: 0.7em!important;
-  line-height: 30px!important;
+  font-size: 0.7em !important;
+  line-height: 30px !important;
   margin-top: 11px;
 }
 
@@ -470,34 +515,33 @@ section[data-type="titlepage"] #editor {
 
 section[data-type="titlepage"] #author {
   margin-top: 58px;
-  text-align: center!important;
-  text-indent: 0!important;
-  font-size: 20px!important;
+  text-align: center !important;
+  text-indent: 0 !important;
+  font-size: 20px !important;
 }
 
 section[data-type="titlepage"] #author span {
   display: block;
   margin-bottom: 12px;
-  font-size: 13px!important;
+  font-size: 13px !important;
   display: block;
 }
 
 section[data-type="titlepage"] #editor p {
-  text-align: center!important;
-  text-indent: 0!important;
+  text-align: center !important;
+  text-indent: 0 !important;
   margin-top: 15px;
 }
 
-
-
 section[data-type="copyright"] p {
-  text-indent: 0!important;
-  text-align: center!important;
+  text-indent: 0 !important;
+  text-align: center !important;
   margin-top: 32px;
   margin-bottom: 32px;
 }
 
-section[data-type="dedication"], section[data-type="epigraph"] {
+section[data-type="dedication"],
+section[data-type="epigraph"] {
   margin-top: 105px;
 }
 
@@ -506,13 +550,14 @@ section[data-type="epigraph"] blockquote {
   padding: 0;
 }
 
-section[data-type="dedication"] p, section[data-type="epigraph"] blockquote p {
-  text-indent: 0!important;
+section[data-type="dedication"] p,
+section[data-type="epigraph"] blockquote p {
+  text-indent: 0 !important;
   font-style: italic;
 }
 
 section[data-type="dedication"] p {
-  text-align: center!important;
+  text-align: center !important;
 }
 
 section[data-type="epigraph"] .caption {
@@ -536,7 +581,9 @@ section[data-type="epigraph"] .caption:before {
   page-break-after: always;
 }
 
-section[data-type="half-title"], section[data-type="titlepage"], section[data-type="epigraph"] {
+section[data-type="half-title"],
+section[data-type="titlepage"],
+section[data-type="epigraph"] {
   page-break-before: right;
   page-break-after: always;
 }
@@ -569,7 +616,11 @@ section[data-type="copyright"] {
   page-break-before: right;
 }
 
-.chapter, .preface, .introduction, #appendices, .appendix {
+.chapter,
+.preface,
+.introduction,
+#appendices,
+.appendix {
   page-break-before: right;
   page-break-after: always;
 }
@@ -586,7 +637,10 @@ figure {
 
 /* table of content */
 
-.toc-part, .toc-chap, .toc-subchap, .toc-app {
+.toc-part,
+.toc-chap,
+.toc-subchap,
+.toc-app {
   /* break-inside: avoid; */
 }
 
@@ -597,11 +651,13 @@ figure {
 }
 
 #toc li {
-  text-indent: 0!important;
-  text-align: left!important;
+  text-indent: 0 !important;
+  text-align: left !important;
 }
 
-.toc-part a[href]::before, .toc-part a[href]::after, .toc-part-app a[href]::before {
+.toc-part a[href]::before,
+.toc-part a[href]::after,
+.toc-part-app a[href]::before {
   display: block;
   text-align: center;
   text-transform: uppercase;
@@ -611,20 +667,22 @@ figure {
   margin-bottom: 30px;
 }
 
-.toc-part:first-of-type{
+.toc-part:first-of-type {
   margin-bottom: 0px;
 }
 
-.toc-chap, .toc-app {
+.toc-chap,
+.toc-app {
   margin-bottom: 15px;
   margin-top: 15px;
 }
 
-.toc-subchap+.toc-chap {
+.toc-subchap + .toc-chap {
   margin-top: 30px;
 }
 
-.toc-chap a, .toc-app a{
+.toc-chap a,
+.toc-app a {
   display: block;
 }
 
@@ -635,11 +693,12 @@ figure {
 
 /* Tables */
 
-td, th {
+td,
+th {
   font-size: 9px;
   line-height: 10px;
   font-weight: normal;
-  text-indent: 0px!important
+  text-indent: 0px !important;
 }
 
 table {
@@ -651,18 +710,20 @@ table {
 }
 
 h5 + table {
-  margin-top: -15px!important;
+  margin-top: -15px !important;
   break-inside: avoid;
 }
 
-table{
+table {
   break-inside: avoid;
 }
-table:not(.table-noborder), th {
+table:not(.table-noborder),
+th {
   border: solid 1pt black;
 }
 
-th, td {
+th,
+td {
   padding-left: 6px;
   padding-right: 6px;
 }
@@ -676,11 +737,13 @@ td {
   vertical-align: top;
 }
 
-table tr:nth-of-type(2) td, #table-appc-01 tr:nth-of-type(2) td {
+table tr:nth-of-type(2) td,
+#table-appc-01 tr:nth-of-type(2) td {
   padding-top: 6px;
 }
 
-table tr:last-of-type td, #table-appc-01 tr:last-of-type td {
+table tr:last-of-type td,
+#table-appc-01 tr:last-of-type td {
   padding-bottom: 6px;
 }
 
@@ -708,21 +771,19 @@ table tr:last-of-type td, #table-appc-01 tr:last-of-type td {
   text-align: right;
 }
 
-
-
 /* Appendix */
 
 .note-titre {
   position: relative;
-  top: -90px!important;
-  text-align: center!important;
+  top: -90px !important;
+  text-align: center !important;
   width: 70%;
-  hyphens: none!important;
+  hyphens: none !important;
   margin: 0 auto;
 }
 
 #appendix-a p {
-  text-indent: -6mm!important;
+  text-indent: -6mm !important;
   padding-left: 6mm;
 }
 
@@ -741,7 +802,7 @@ table tr:last-of-type td, #table-appc-01 tr:last-of-type td {
   font-size: 0.7em;
   line-height: 15px;
   margin: 30px auto 15px auto;
-  text-align: center!important;
+  text-align: center !important;
   counter-increment: h4appe;
   width: 85%;
 }
@@ -752,7 +813,7 @@ table tr:last-of-type td, #table-appc-01 tr:last-of-type td {
 
 #appendix-e h5 {
   counter-reset: table-caption;
-  counter-increment: h5-appe
+  counter-increment: h5-appe;
 }
 
 #appendix-e h5:before {
@@ -760,20 +821,18 @@ table tr:last-of-type td, #table-appc-01 tr:last-of-type td {
 }
 
 #appendix-e table caption {
-  counter-increment: table-caption
+  counter-increment: table-caption;
 }
 
 #appendix-e table {
-  width: 80%
+  width: 80%;
 }
 
 #appendix-e table caption:before {
   content: counter(table-caption, lower-alpha) ". ";
 }
 
-
-
-#appendix-e h5+table {
+#appendix-e h5 + table {
   margin-top: 0;
   padding-top: 0;
 }

@@ -2,19 +2,13 @@
   "name": "pagedjs-cli",
   "version": "0.1.0",
   "author": "Fred Chasen",
-  "license": "MIT",
-  "homepage": "https://pagedmedia.org",
-  "repository": {
-    "type": "git",
-    "url": "https://gitlab.pagedmedia.org/polyfills/pagedjs-cli.git"
-  },
-  "bin": "./bin/paged",
   "scripts": {
-    "start": "./bin/paged",
     "build": "pkg .",
-    "lint": "./node_modules/.bin/eslint src bin/paged"
+    "lint": "./node_modules/.bin/eslint src bin/paged",
+    "start": "./bin/paged"
   },
   "main": "index.js",
+  "bin": "./bin/paged",
   "dependencies": {
     "commander": "^5.0.0",
     "express": "^4.17.1",
@@ -31,5 +25,11 @@
   },
   "devDependencies": {
     "eslint": "^6.8.0"
-  }
+  },
+  "homepage": "https://pagedmedia.org",
+  "repository": {
+    "type": "git",
+    "url": "https://gitlab.pagedmedia.org/polyfills/pagedjs-cli.git"
+  },
+  "license": "MIT"
 }

@@ -3,12 +3,12 @@ const EventEmitter = require("events");
 
 const PDFDocumentWriter = require("./writer");
 
-class PostProcesser extends EventEmitter {
+class PostProcessor extends EventEmitter {
   constructor(pdf) {
     super();
 
     if (!pdf) {
-      throw "Must pass a PDF Buffer to PostProcesser";
+      throw "Must pass a PDF Buffer to PostProcessor";
     }
     this.pdf = pdf;
     this.pdfDoc = PDFLib.PDFDocumentFactory.load(pdf);
@@ -45,8 +45,8 @@ class PostProcesser extends EventEmitter {
     this.updateInfoDict(meta);
   }
 
-  getInfoDict(){
-    // Info Reference in Skia pdfs is always 1st
+  getInfoDict() {
+    // Info Reference in Skia PDF is always 1st
     let ref = PDFLib.PDFIndirectReference.forNumbers(1, 0);
     let info = this.pdfDoc.index.lookup(ref);
     return {
@@ -54,15 +54,16 @@ class PostProcesser extends EventEmitter {
       subject: info.getMaybe("Subject") && info.getMaybe("Subject").string,
       keywords: info.getMaybe("Keywords") && info.getMaybe("Keywords").string,
       author: info.getMaybe("Author") && info.getMaybe("Author").string,
-      creationDate: info.getMaybe("CreationDate") && info.getMaybe("CreationDate").string,
+      creationDate:
+        info.getMaybe("CreationDate") && info.getMaybe("CreationDate").string,
       modDate: info.getMaybe("ModDate") && info.getMaybe("ModDate").string,
       creator: info.getMaybe("Creator") && info.getMaybe("Creator").string,
-      producer: info.getMaybe("Producer") && info.getMaybe("Producer").string
+      producer: info.getMaybe("Producer") && info.getMaybe("Producer").string,
     };
   }
 
   updateInfoDict(meta) {
-    // Info Reference in Skia pdfs is always 1st
+    // Info Reference in Skia pdf is always 1st
     let ref = PDFLib.PDFIndirectReference.forNumbers(1, 0);
     let info = this.pdfDoc.index.lookup(ref);
 
@@ -75,7 +76,10 @@ class PostProcesser extends EventEmitter {
     }
 
     if (meta.keywords && meta.keywords.length) {
-      info.set("Keywords", PDFLib.PDFString.fromString(meta.keywords.join(", ")));
+      info.set(
+        "Keywords",
+        PDFLib.PDFString.fromString(meta.keywords.join(", "))
+      );
     }
 
     if (meta.author) {
@@ -83,11 +87,17 @@ class PostProcesser extends EventEmitter {
     }
 
     if (meta.creationDate) {
-      info.set("CreationDate", PDFLib.PDFString.fromString(meta.creationDate.toISOString()));
+      info.set(
+        "CreationDate",
+        PDFLib.PDFString.fromString(meta.creationDate.toISOString())
+      );
     }
 
     if (meta.modDate) {
-      info.set("ModDate", PDFLib.PDFString.fromString(meta.modDate.toISOString()));
+      info.set(
+        "ModDate",
+        PDFLib.PDFString.fromString(meta.modDate.toISOString())
+      );
     }
 
     if (meta.creator) {
@@ -103,6 +113,7 @@ class PostProcesser extends EventEmitter {
     const charCodes = (str) => str.split("").map((c) => c.charCodeAt(0));
     const typedArrayFor = (str) => new Uint8Array(charCodes(str));
     const whitespacePadding = new Array(20).fill(" ".repeat(100)).join("\n");
+    /* cSpell:disable */
     const metadataXML = `
       <?xpacket begin="" id="W5M0MpCehiHzreSzNTczkc9d"?>
         <x:xmpmeta xmlns:x="adobe:ns:meta/" x:xmptk="Adobe XMP Core 5.2-c001 63.139439, 2010/09/27-13:37:26">
@@ -146,6 +157,7 @@ class PostProcesser extends EventEmitter {
         ${whitespacePadding}
       <?xpacket end="w"?>
     `.trim();
+    /* cSpell:enable */
 
     const metadataStreamDict = PDFLib.PDFDictionary.from(
       {
@@ -153,12 +165,12 @@ class PostProcesser extends EventEmitter {
         Subtype: PDFLib.PDFName.from("XML"),
         Length: PDFLib.PDFNumber.fromNumber(metadataXML.length),
       },
-      this.pdfDoc.index,
+      this.pdfDoc.index
     );
 
     const metadataStream = PDFLib.PDFRawStream.from(
       metadataStreamDict,
-      typedArrayFor(metadataXML),
+      typedArrayFor(metadataXML)
     );
 
     const metadataStreamRef = this.pdfDoc.register(metadataStream);
@@ -183,18 +195,17 @@ class PostProcesser extends EventEmitter {
       }
 
       const rectangle = PDFLib.PDFArray.fromArray(
-          [
-            PDFLib.PDFNumber.fromNumber(boxes.crop.x),
-            PDFLib.PDFNumber.fromNumber(boxes.crop.y),
-            PDFLib.PDFNumber.fromNumber(boxes.crop.width + boxes.crop.x),
-            PDFLib.PDFNumber.fromNumber(boxes.crop.height + boxes.crop.y),
-          ],
-          pdfPage.index,
-        );
+        [
+          PDFLib.PDFNumber.fromNumber(boxes.crop.x),
+          PDFLib.PDFNumber.fromNumber(boxes.crop.y),
+          PDFLib.PDFNumber.fromNumber(boxes.crop.width + boxes.crop.x),
+          PDFLib.PDFNumber.fromNumber(boxes.crop.height + boxes.crop.y),
+        ],
+        pdfPage.index
+      );
 
-        pdfPage.set("TrimBox", rectangle);
+      pdfPage.set("TrimBox", rectangle);
     });
-
   }
 
   updatePageBoxes(page) {
@@ -215,11 +226,9 @@ class PostProcesser extends EventEmitter {
   addOutline(outlineSpec) {
     const outline = JSON.parse(JSON.stringify(outlineSpec));
 
-
     const pageRefs = [];
     this.pdfDoc.catalog.Pages.traverse((kid, ref) => {
-      if (kid instanceof PDFLib.PDFPage)
-        pageRefs.push(ref);
+      if (kid instanceof PDFLib.PDFPage) pageRefs.push(ref);
     });
     const index = this.pdfDoc.index;
 
@@ -245,9 +254,11 @@ class PostProcesser extends EventEmitter {
 
     const createOutlineItem = (outlineItem, prev, next, parent) => {
       if (!outlineItem.id) {
-        throw new Error(`Cannot generate outline item with title '${outlineItem.title} ` +
-                        "without any target anchor. Please specify an 'id' attribute for " +
-                        "the relevant HTML element");
+        throw new Error(
+          `Cannot generate outline item with title '${outlineItem.title} ` +
+            "without any target anchor. Please specify an 'id' attribute for " +
+            "the relevant HTML element"
+        );
       }
       const item = {
         Title: PDFLib.PDFString.fromString(outlineItem.title),
@@ -263,7 +274,9 @@ class PostProcesser extends EventEmitter {
       if (outlineItem.children.length > 0) {
         item.First = outlineItem.children[0].ref;
         item.Last = outlineItem.children[outlineItem.children.length - 1].ref;
-        item.Count = PDFLib.PDFNumber.fromNumber(countOutlineLayer(outlineItem.children));
+        item.Count = PDFLib.PDFNumber.fromNumber(
+          countOutlineLayer(outlineItem.children)
+        );
         createItemsForOutlineLayer(outlineItem.children, outlineItem.ref);
       }
 
@@ -289,7 +302,7 @@ class PostProcesser extends EventEmitter {
         Last: outline[outline.length - 1].ref,
         Count: PDFLib.PDFNumber.fromNumber(countOutlineLayer(outline)),
       },
-      index,
+      index
     );
     index.assign(outlineReference, pdfOutline);
     this.pdfDoc.catalog.set("Outlines", outlineReference);
@@ -303,4 +316,4 @@ class PostProcesser extends EventEmitter {
   }
 }
 
-module.exports = PostProcesser;
+module.exports = PostProcessor;

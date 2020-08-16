@@ -27,18 +27,38 @@ program
   .option("-x, --html", "output html file")
   .option("-b, --blockLocal", "Disallow access to filesystem for local files")
   .option("-r, --blockRemote", "Disallow requests to remote servers")
-  .option("--allowedPath [allowedPaths]", "Only allow access to given filesystem paths, repeatable.", collect, [])
-  .option("--allowedDomain [allowedDomains]", "Only allow access to given remote domains, repeatable", collect, [])
-  .option("--outline-tags [tags]", "Specifies that an outline should be " +
-          "generated for the resulting PDF document. [tags] specifies which " +
-          "HTML tags should be considered for that outline. " +
-          "\"h1,h2\" will trigger an outline with \"h1\" tags as root elements " +
-          "and \"h2\" elements as their childs.")
-  .option("--additional-script <script>", "Additional script tags which are " +
-          "added to the HTML document before rendering. This is useful for " +
-          "adding custom pagedjs handlers. The option can be repeated.",
-          collect, [])
-  .option("--browserEndpoint", "Use a remote Chrome server with browserWSEndpoint")
+  .option(
+    "--allowedPath [allowedPaths]",
+    "Only allow access to given filesystem paths, repeatable.",
+    collect,
+    []
+  )
+  .option(
+    "--allowedDomain [allowedDomains]",
+    "Only allow access to given remote domains, repeatable",
+    collect,
+    []
+  )
+  .option(
+    "--outline-tags [tags]",
+    "Specifies that an outline should be " +
+      "generated for the resulting PDF document. [tags] specifies which " +
+      "HTML tags should be considered for that outline. " +
+      '"h1,h2" will trigger an outline with "h1" tags as root elements ' +
+      'and "h2" elements as their childs.'
+  )
+  .option(
+    "--additional-script <script>",
+    "Additional script tags which are " +
+      "added to the HTML document before rendering. This is useful for " +
+      "adding custom pagedjs handlers. The option can be repeated.",
+    collect,
+    []
+  )
+  .option(
+    "--browserEndpoint",
+    "Use a remote Chrome server with browserWSEndpoint"
+  )
   .parse(process.argv);
 
 function collect(value, previous) {
@@ -72,33 +92,30 @@ if (!input) {
 }
 
 if (relativePath) {
-
   if ([".html", ".xhtml"].indexOf(path.extname(relativePath)) === -1) {
     console.error("Must pass a html or xhtml file as input");
     return process.exit(1);
   }
 
   try {
-      fs.accessSync(relativePath, fs.F_OK);
+    fs.accessSync(relativePath, fs.F_OK);
   } catch (e) {
-      console.error("Input cannot be found", e);
-      return process.exit(1);
+    console.error("Input cannot be found", e);
+    return process.exit(1);
   }
 }
 
-if (typeof(program.output) === "string") {
+if (typeof program.output === "string") {
   output = path.resolve(dir, program.output);
-} else if (typeof(program.output) !== "undefined") {
+} else if (typeof program.output !== "undefined") {
   output = "./" + replaceExt(path.basename(input), ".pdf");
 } else {
   output = "output.pdf";
 }
 
-
 const spinner = ora({
-  spinner: "circleQuarters"
+  spinner: "circleQuarters",
 });
-
 
 if (typeof input === "string") {
   spinner.start("Loading: " + input);
@@ -143,7 +160,9 @@ if (typeof input === "string") {
       file = await printer.html(input, options);
       output = replaceExt(output, ".html");
     } else {
-      options.outlineTags = !program.outlineTags ? [] : program.outlineTags.split(",");
+      options.outlineTags = !program.outlineTags
+        ? []
+        : program.outlineTags.split(",");
       file = await printer.pdf(input, options);
     }
   } else {
